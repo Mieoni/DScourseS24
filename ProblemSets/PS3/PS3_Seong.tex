@@ -1,0 +1,191 @@
+\documentclass[12pt, letterpaper]{article}
+
+% Language and font setting
+\usepackage[english]{babel}
+\usepackage{times}
+
+% Set page size and margins
+\usepackage[letterpaper,top=1.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[flushmargin,bottom]{footmisc}
+
+% Set line spacing
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+% Set style of section
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\renewcommand\thesection{Exercise \arabic{section}}
+
+\titlespacing*{\section}{0pt}{1em}{2pt} % Change the spacing before and after the section heading
+
+% Customize the style of article title
+\usepackage{titling}
+\setlength{\droptitle}{-4em} % reduce the space before title
+\settowidth{\thanksmarkwidth}{*}
+\setlength{\thanksmargin}{-\thanksmarkwidth} % remove the indent before thanks
+
+% Set shade color for "solutions"
+\usepackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+\usepackage{framed}
+
+% Packages about equations and mathematics
+\usepackage{amsmath}
+\usepackage{amssymb} % sign of empty set
+\usepackage{dutchcal} % set swash words
+\usepackage{bbm}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\plim}{plim}
+
+% Parentheses
+\newcommand{\smp}[1]{\left(#1\right)}
+\newcommand{\medp}[1]{\left[#1\right]}
+\newcommand{\bgp}[1]{\left\{#1\right\}}
+
+% Sign of absolute value and norm
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs and \norm resizes the size of the brackets, and the starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% Figure
+\usepackage{graphicx}
+\usepackage{asymptote}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns,decorations.pathreplacing,calligraphy,calc,shapes.misc}
+
+% Table
+\usepackage{float} % Fix the placement of tables/figures
+\usepackage{booktabs}
+\usepackage{siunitx} % align numbers by decimal point
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption} % set captions for subfigure/subtable
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
+
+% Customize the styles of "itemize" and "enumerate"
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt,itemindent=0.5em}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+
+% Code listing
+\usepackage{listings}
+\lstdefinelanguage{Stata}{
+    % System commands
+    morekeywords=[1]{bs, clear, display, drop, egen, gen, jackknife, keep, predict, nlcom, reg, reghdfe, replace, use, webuse, xtreg},
+    % Keywords
+    morekeywords=[2]{forvalues, if, foreach},
+    morecomment=[l]{//},
+    morecomment=[l]{**},
+    morecomment=[s]{/*}{*/},
+    % morecomment=[s]{,}{//},
+    % The following is used by macros, like `lags'.
+    keywordsprefix=[3]\$,
+    morecomment=[n][keywordstyle3]{`}{'},
+    morestring=[b]",
+    sensitive=true,
+}
+
+
+\renewcommand{\ttdefault}{cmtt}
+\lstdefinestyle{mystyle}{
+  basicstyle=\ttfamily
+}
+
+\lstset{style=mystyle,breaklines=true}
+
+\definecolor{structurecolor}{RGB}{60,113,183}
+\definecolor{forestgreen}{RGB}{0,153,76}
+\definecolor{orchid}{RGB}{225,0,152}
+\definecolor{winered}{RGB}{153,0,0}
+\lstset{language=Stata,
+  % Code design
+  commentstyle=\slshape\color{forestgreen},
+  identifierstyle=\color{black},
+  keywordstyle=[1]{\color{blue}},
+  keywordstyle=[2]{\color{blue}},
+  keywordstyle=[3]{\color{winered}},
+  %otherkeywords={},
+  emph={std},
+  emphstyle=\color{orchid},
+  stringstyle=\color{winered},
+  % Line-numbers design
+  numbers=left, % where to put the line-numbers      
+  % numbersep=5pt,
+  numberstyle=\color{gray},
+  % Space design
+  keepspaces=true, % keep indentation of code
+  showspaces=false, % show spaces everywhere adding particular underscores
+  showstringspaces=false, % underline spaces within strings only
+  showtabs=false,
+  % Frame design
+  frame=single,
+  tabsize=2,
+  rulecolor=\color{structurecolor}, % set the frame-color
+  framerule=0.2pt,
+  % Margin design
+  xleftmargin=0.8cm,
+  xrightmargin=0.8cm,
+  % Punctuation design
+  literate={`}{\textasciigrave}1 {~}{{\color{blue}\raisebox{0.5ex}{\texttildelow}}}1,
+  upquote=true,
+  % Other design
+  columns=flexible,
+  % backgroundcolor=\color{white},
+  % caption=Python example,
+  % backgroundcolor=\color{lightgrey},
+  % mathescape=false,
+}
+
+
+% Special words
+\newcommand{\comp}[1]{{\fontfamily{cmtt}\selectfont\color{blue}#1}}
+
+% Other packages
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+
+
+\pagenumbering{gobble}
+\title{Econ-5253\\
+{Problem Set 3}  \\
+\large  \vspace{-1em}}
+\author{Mieon Seong}
+\date{Due by Feb 13th, 2024}
+
+\begin{document}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{5pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
+\maketitle
+
+\noindent \text{\Large{Question 1. How big was the insuracne .csv file (once uncompressed?}}\\
+\indent The size of the file is 5MB.
+\\
+\\
+
+\noindent \text{\Large{Question 2. How many lines did the CSV file have before doing the end-of-line (EOL) oncersion?}}\\
+\indent The number of lines that the CSV file have before doing the end-of-line (EOL) conversion is 0.  
+\\
+\\
+
+\noindent \text{\Large{Question 3. How many lines did the CSV file have after doing the end-of-line (EOL) conversion? }}\\
+\indent The number of lines that the CSV file have after doing the end-of-line (EOL) conversion is 36634.
+
+
+\end{document}
