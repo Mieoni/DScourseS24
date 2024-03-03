@@ -1,0 +1,31 @@
+library(rvest)
+
+movie <- read_html("https://en.wikipedia.org/wiki/List_of_highest-grossing_science_fiction_films")
+
+movie_table <- movie %>%
+  html_element("#mw-content-text > div.mw-content-ltr.mw-parser-output > table:nth-child(6)") %>%
+  html_table()
+
+
+movie_data <- movie_table[[1]]
+
+head(movie_data)
+
+write.csv(movie_data, "movie_data.csv")
+
+
+library(rvest)
+
+response <- httr::GET("https://www.google.com/finance/quote/DIS:NYSE")
+
+html_content <- httr::content(response, "text", encoding = "UTF-8")
+page <- read_html(html_content)
+
+
+current_price <- page %>%
+  html_node(".YMlKec.fxKbKc") %>%
+  html_text()
+
+stock_data <- data.frame(Current_Price = current_price)
+
+print(stock_data)
