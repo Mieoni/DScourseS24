@@ -1,0 +1,40 @@
+# read .csv file
+data <- read.csv("movies.csv")
+ 
+# drop some columns of the data
+data <- data[, -c(2, 4, 5, 7, 8, 9, 10, 11, 14, 15)]
+
+# drop rows with NA
+data <- na.omit(data)
+    
+# Load required libraries
+library(data.table)
+library(ggplot2)
+
+# Assuming 'data' is your data frame containing the variables 'budget' and 'gross'
+
+ # Scatter plot 
+plot(data$budget, data$revenue, xlab = "Budget", ylab = "Gross", main = "Budget vs Gross")
+
+# Add a trend line (linear regression)  
+abline(lm(gross ~ budget, data = data))
+
+
+
+# Assuming 'data' is your data frame containing the variables 'budget' and 'Score'
+
+# Scatter plot 
+plot(data$budget, data$score, xlab = "Budget", ylab = "Score", main = "Budget vs Score")
+
+# Add a trend line (linear regression)  
+abline(lm(score ~ budget, data = data))
+
+
+
+# Assuming 'data' is your data frame containing the variables 'Gross' and 'Score'
+
+# Scatter plot 
+plot(data$gross, data$score, xlab = "Gross", ylab = "Score", main = "Gross vs Score")
+
+# Add a trend line (linear regression)  
+abline(lm(score ~ gross, data = data))
