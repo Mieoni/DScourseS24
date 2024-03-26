@@ -1,40 +1,221 @@
-# read .csv file
-data <- read.csv("movies.csv")
- 
-# drop some columns of the data
-data <- data[, -c(2, 4, 5, 7, 8, 9, 10, 11, 14, 15)]
+\documentclass[12pt, letterpaper]{article}
 
-# drop rows with NA
-data <- na.omit(data)
-    
-# Load required libraries
-library(data.table)
-library(ggplot2)
+% Language and font setting
+\usepackage[english]{babel}
+\usepackage{times}
 
-# Assuming 'data' is your data frame containing the variables 'budget' and 'gross'
+% Set page size and margins
+\usepackage[letterpaper,top=1.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[flushmargin,bottom]{footmisc}
 
- # Scatter plot 
-plot(data$budget, data$revenue, xlab = "Budget", ylab = "Gross", main = "Budget vs Gross")
+% Set line spacing
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
 
-# Add a trend line (linear regression)  
-abline(lm(gross ~ budget, data = data))
+% Set style of section
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\renewcommand\thesection{Exercise \arabic{section}}
+
+\titlespacing*{\section}{0pt}{1em}{2pt} % Change the spacing before and after the section heading
+
+% Customize the style of article title
+\usepackage{titling}
+\setlength{\droptitle}{-4em} % reduce the space before title
+\settowidth{\thanksmarkwidth}{*}
+\setlength{\thanksmargin}{-\thanksmarkwidth} % remove the indent before thanks
+
+% Set shade color for "solutions"
+\usepackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+\usepackage{framed}
+
+% Packages about equations and mathematics
+\usepackage{amsmath}
+\usepackage{amssymb} % sign of empty set
+\usepackage{dutchcal} % set swash words
+\usepackage{bbm}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\plim}{plim}
+
+% Parentheses
+\newcommand{\smp}[1]{\left(#1\right)}
+\newcommand{\medp}[1]{\left[#1\right]}
+\newcommand{\bgp}[1]{\left\{#1\right\}}
+
+% Sign of absolute value and norm
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs and \norm resizes the size of the brackets, and the starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% Figure
+\usepackage{graphicx}
+\usepackage{asymptote}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns,decorations.pathreplacing,calligraphy,calc,shapes.misc}
+
+% Table
+\usepackage{float} % Fix the placement of tables/figures
+\usepackage{booktabs}
+\usepackage{siunitx} % align numbers by decimal point
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption} % set captions for subfigure/subtable
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
+
+% Customize the styles of "itemize" and "enumerate"
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt,itemindent=0.5em}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+
+% Code listing
+\usepackage{listings}
+\lstdefinelanguage{Stata}{
+    % System commands
+    morekeywords=[1]{bs, clear, display, drop, egen, gen, jackknife, keep, predict, nlcom, reg, reghdfe, replace, use, webuse, xtreg},
+    % Keywords
+    morekeywords=[2]{forvalues, if, foreach},
+    morecomment=[l]{//},
+    morecomment=[l]{**},
+    morecomment=[s]{/*}{*/},
+    % morecomment=[s]{,}{//},
+    % The following is used by macros, like `lags'.
+    keywordsprefix=[3]\$,
+    morecomment=[n][keywordstyle3]{`}{'},
+    morestring=[b]",
+    sensitive=true,
+}
+
+
+\renewcommand{\ttdefault}{cmtt}
+\lstdefinestyle{mystyle}{
+  basicstyle=\ttfamily
+}
+
+\lstset{style=mystyle,breaklines=true}
+
+\definecolor{structurecolor}{RGB}{60,113,183}
+\definecolor{forestgreen}{RGB}{0,153,76}
+\definecolor{orchid}{RGB}{225,0,152}
+\definecolor{winered}{RGB}{153,0,0}
+\lstset{language=Stata,
+  % Code design
+  commentstyle=\slshape\color{forestgreen},
+  identifierstyle=\color{black},
+  keywordstyle=[1]{\color{blue}},
+  keywordstyle=[2]{\color{blue}},
+  keywordstyle=[3]{\color{winered}},
+  %otherkeywords={},
+  emph={std},
+  emphstyle=\color{orchid},
+  stringstyle=\color{winered},
+  % Line-numbers design
+  numbers=left, % where to put the line-numbers      
+  % numbersep=5pt,
+  numberstyle=\color{gray},
+  % Space design
+  keepspaces=true, % keep indentation of code
+  showspaces=false, % show spaces everywhere adding particular underscores
+  showstringspaces=false, % underline spaces within strings only
+  showtabs=false,
+  % Frame design
+  frame=single,
+  tabsize=2,
+  rulecolor=\color{structurecolor}, % set the frame-color
+  framerule=0.2pt,
+  % Margin design
+  xleftmargin=0.8cm,
+  xrightmargin=0.8cm,
+  % Punctuation design
+  literate={`}{\textasciigrave}1 {~}{{\color{blue}\raisebox{0.5ex}{\texttildelow}}}1,
+  upquote=true,
+  % Other design
+  columns=flexible,
+  % backgroundcolor=\color{white},
+  % caption=Python example,
+  % backgroundcolor=\color{lightgrey},
+  % mathescape=false,
+}
+
+
+% Special words
+\newcommand{\comp}[1]{{\fontfamily{cmtt}\selectfont\color{blue}#1}}
+
+% Other packages
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
 
 
-# Assuming 'data' is your data frame containing the variables 'budget' and 'Score'
+\pagenumbering{gobble}
+\title{Econ-5253\\
+{Problem Set 6}  \\
+\large  \vspace{-1em}}
+\author{Mieon Seong}
+\date{Due by Mar 12th, 2024}
 
-# Scatter plot 
-plot(data$budget, data$score, xlab = "Budget", ylab = "Score", main = "Budget vs Score")
+\begin{document}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{5pt}
+\setlength{\belowdisplayshortskip}{5pt}
 
-# Add a trend line (linear regression)  
-abline(lm(score ~ budget, data = data))
+\maketitle
 
+\noindent \text{\Large{Question : Find some data that interests you and clean it.}}\\
+\\
+\indent I found movie rating data including in 
+name,rating,genre,year,released,score,votes,director,writer,star,country,budget,gross,company,runtime
+\\
+\\
+But, I just need information such as name, genres, score, budget, gross. So, I cleaned the data which means I deleted some information such as year, released, votes, director, writer, star, country in this data. 
+\\
+\\
+\noindent \text{\Large{Question : what is the code for cleaning data?}}\\
+\\
+\indent setwd("/Users/mieonseong/Downloads")
+\\
+ read .csv file\\
+data $<-$ read.csv("movies.csv")\\
+\\
+ drop some columns of the data\\
+data $<-$ data[, -c(2, 4, 5, 7, 8, 9, 10, 11, 14, 15)]\\
+\\
+drop rows with NA\\
+data $<-$ na.omit(data)
+\\
+\newpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{PS6a_Seong.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+\\
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{PS6b_Seong.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+\\
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{PS6c_Seong.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
 
-
-# Assuming 'data' is your data frame containing the variables 'Gross' and 'Score'
-
-# Scatter plot 
-plot(data$gross, data$score, xlab = "Gross", ylab = "Score", main = "Gross vs Score")
-
-# Add a trend line (linear regression)  
-abline(lm(score ~ gross, data = data))
+\end{document}
