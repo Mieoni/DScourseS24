@@ -1,61 +1,228 @@
-#install.packages("mice")
-#install.packages("modelsummary")
+\documentclass[12pt, letterpaper]{article}
 
-library(mice)
-library(modelsummary)
-library(tidyverse)
+% Language and font setting
+\usepackage[english]{babel}
+\usepackage{times}
 
-# read .csv file
-setwd("/Users/mieonseong/Downloads")
-data <- read.csv("wages.csv")
-data <- read.csv("/Users/mieonseong/Downloads/wages.csv")
+% Set page size and margins
+\usepackage[letterpaper,top=1.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[flushmargin,bottom]{footmisc}
+
+% Set line spacing
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+% Set style of section
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\renewcommand\thesection{Exercise \arabic{section}}
+
+\titlespacing*{\section}{0pt}{1em}{2pt} % Change the spacing before and after the section heading
+
+% Customize the style of article title
+\usepackage{titling}
+\setlength{\droptitle}{-4em} % reduce the space before title
+\settowidth{\thanksmarkwidth}{*}
+\setlength{\thanksmargin}{-\thanksmarkwidth} % remove the indent before thanks
+
+% Set shade color for "solutions"
+\usepackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+\usepackage{framed}
+
+% Packages about equations and mathematics
+\usepackage{amsmath}
+\usepackage{amssymb} % sign of empty set
+\usepackage{dutchcal} % set swash words
+\usepackage{bbm}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\plim}{plim}
+
+% Parentheses
+\newcommand{\smp}[1]{\left(#1\right)}
+\newcommand{\medp}[1]{\left[#1\right]}
+\newcommand{\bgp}[1]{\left\{#1\right\}}
+
+% Sign of absolute value and norm
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs and \norm resizes the size of the brackets, and the starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% Figure
+\usepackage{graphicx}
+\usepackage{asymptote}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns,decorations.pathreplacing,calligraphy,calc,shapes.misc}
+
+% Table
+\usepackage{float} % Fix the placement of tables/figures
+\usepackage{booktabs}
+\usepackage{siunitx} % align numbers by decimal point
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption} % set captions for subfigure/subtable
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
+
+% Customize the styles of "itemize" and "enumerate"
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt,itemindent=0.5em}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
 
 
-# Question. 5
-# drop rows with NA in hgc
-data <- data[!is.na(data$hgc),]
+% Code listing
+\usepackage{listings}
+\lstdefinelanguage{Stata}{
+    % System commands
+    morekeywords=[1]{bs, clear, display, drop, egen, gen, jackknife, keep, predict, nlcom, reg, reghdfe, replace, use, webuse, xtreg},
+    % Keywords
+    morekeywords=[2]{forvalues, if, foreach},
+    morecomment=[l]{//},
+    morecomment=[l]{**},
+    morecomment=[s]{/*}{*/},
+    % morecomment=[s]{,}{//},
+    % The following is used by macros, like `lags'.
+    keywordsprefix=[3]\$,
+    morecomment=[n][keywordstyle3]{`}{'},
+    morestring=[b]",
+    sensitive=true,
+}
 
-# drop rows with NA in tenure
-data <- data[!is.na(data$tenure),]
+
+\renewcommand{\ttdefault}{cmtt}
+\lstdefinestyle{mystyle}{
+  basicstyle=\ttfamily
+}
+
+\lstset{style=mystyle,breaklines=true}
+
+\definecolor{structurecolor}{RGB}{60,113,183}
+\definecolor{forestgreen}{RGB}{0,153,76}
+\definecolor{orchid}{RGB}{225,0,152}
+\definecolor{winered}{RGB}{153,0,0}
+\lstset{language=Stata,
+  % Code design
+  commentstyle=\slshape\color{forestgreen},
+  identifierstyle=\color{black},
+  keywordstyle=[1]{\color{blue}},
+  keywordstyle=[2]{\color{blue}},
+  keywordstyle=[3]{\color{winered}},
+  %otherkeywords={},
+  emph={std},
+  emphstyle=\color{orchid},
+  stringstyle=\color{winered},
+  % Line-numbers design
+  numbers=left, % where to put the line-numbers      
+  % numbersep=5pt,
+  numberstyle=\color{gray},
+  % Space design
+  keepspaces=true, % keep indentation of code
+  showspaces=false, % show spaces everywhere adding particular underscores
+  showstringspaces=false, % underline spaces within strings only
+  showtabs=false,
+  % Frame design
+  frame=single,
+  tabsize=2,
+  rulecolor=\color{structurecolor}, % set the frame-color
+  framerule=0.2pt,
+  % Margin design
+  xleftmargin=0.8cm,
+  xrightmargin=0.8cm,
+  % Punctuation design
+  literate={`}{\textasciigrave}1 {~}{{\color{blue}\raisebox{0.5ex}{\texttildelow}}}1,
+  upquote=true,
+  % Other design
+  columns=flexible,
+  % backgroundcolor=\color{white},
+  % caption=Python example,
+  % backgroundcolor=\color{lightgrey},
+  % mathescape=false,
+}
+
+
+% Special words
+\newcommand{\comp}[1]{{\fontfamily{cmtt}\selectfont\color{blue}#1}}
+
+% Other packages
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
 
 
-# Question. 6
-# summary table of the data
-datasummary_skim(data)
+\pagenumbering{gobble}
+\title{Econ-5253\\
+{Problem Set 7}  \\
+\large  \vspace{-1em}}
+\author{Mieon Seong}
+\date{Due by Mar 26th, 2024}
 
-datasummary(All(data) ~ Mean + SD + Min + Median + Max, data = data, output = 'latex')
+\begin{document}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{5pt}
+\setlength{\belowdisplayshortskip}{5pt}
 
-# Summary of the data
-summary(data)
+\maketitle
+
+\subsection*{Question 6-1 : Use modelsummary to produce a summary table of this data frame}
+
+\begin{table}[h]
+\centering
+\begin{tabular}[t]{lrrrrr}
+\toprule
+  & Mean & SD & Min & Median & Max\\
+\midrule
+logwage & \num{1.63} & \num{0.39} & \num{0.00} & \num{1.66} & \num{2.26}\\
+hgc & \num{13.10} & \num{2.52} & \num{0.00} & \num{12.00} & \num{18.00}\\
+tenure & \num{5.97} & \num{5.51} & \num{0.00} & \num{3.75} & \num{25.92}\\
+age & \num{39.15} & \num{3.06} & \num{34.00} & \num{39.00} & \num{46.00}\\
+\bottomrule
+\end{tabular}
+\end{table}
+\\
+\subsection*{Question 6-2 : At what rate are log wages missing?}
+\noindent The number of variable is 2246. Also, the number of NA of log wages is 560. So, the rate is 24.9\%.
+\\
+\\
+\subsection*{Question 6-3 : Do you think the logwage variable is most likely to be MCAR, MAR, or MNAR?}
+\noindent If the probability of being missing is the same for all cases, then the data are said to be missing completely at random (MCAR). In this data set, the probability of missing data about logwage variable is same (25\%). 
+\\
+\\
+\newpage
+\subsection*{Question 7-1 : Perform the following imputation methods for missing logwage observations.}
+\begin{table}[h]
+\centering
+\begin{tabular}[t]{lrrrrr}
+\toprule
+  & Mean & SD & Min & Median & Max\\
+\midrule
+logwage & \num{1.63} & \num{0.39} & \num{0.00} & \num{1.66} & \num{2.26}\\
+hgc & \num{13.10} & \num{2.52} & \num{0.00} & \num{12.00} & \num{18.00}\\
+tenure & \num{5.97} & \num{5.51} & \num{0.00} & \num{3.75} & \num{25.92}\\
+age & \num{39.15} & \num{3.06} & \num{34.00} & \num{39.00} & \num{46.00}\\
+\bottomrule
+\end{tabular}
+\end{table}
+\\
+\subsection*{Question 7-2 : The true value of $\hat{\beta_{1}}=0.093$. Comment on the differences of $\hat{\beta_{1}}$ across the models. What patterns do you see? What can you conclude about the veracity of the various imputation methods? Also discuss what the estimates of $\hat{\beta_{1}}$ are for the last two methods.}
+\\
+\\
+The first method is that we deleted all NA variables in the logwage and then calculated. However, in the second method, we performed mean imputation to fill in missing log wages, imputed missing log wages as the predicted values from the complete cases, and performed a multiple imputation. 
+\\
+\\
+\subsection*{Question 8 : Tell me about the progress you've made on your project. What data are you using? What kinds of modeling approaches do you think you're going to take?}
+In my project, I used movie rating data which includes some information such as name, rating, genre, year, score, year, budget, gross and so on. By using the data, I would like to correlation between budget and gross and so on. 
 
 
 
-# Question. 7
-# Estimate the regression using only complete cases
-# drop rows with NA in logwage
-data0 <- data[!is.na(data$logwage),]
-model <- lm(logwage ~ hgc + tenure + I(tenure^2) + age + married, data = data0)
-
-# Mean imputation
-data1 <- wages
-data1 <- mice(data, m=1, method='mean')
-model1 <- with(data1, lm(logwage ~ hgc + tenure + I(tenure^2) + age + married))
-
-# Predictive mean matching
-data2 <- wages
-data2 <- mice(data, m=1, method='pmm')
-model2 <- with(data2, lm(logwage ~ hgc + tenure + I(tenure^2) + age + married))
-
-# Multiple imputation
-data3 <- wages
-data3 <- mice(data, m=5, method='pmm')
-model3 <- with(data3, lm(logwage ~ hgc + tenure + I(tenure^2) + age + married))
-
-# summary table of the data
-datasummary_skim(data)
-
-datasummary(All(data) ~ Mean + SD + Min + Median + Max, data = data, output = 'latex')
-
-# Summary of the data
-summary(data)
+\end{document}
