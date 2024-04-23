@@ -1,0 +1,220 @@
+\documentclass[12pt, letterpaper]{article}
+
+% Language and font setting
+\usepackage[english]{babel}
+\usepackage{times}
+
+% Set page size and margins
+\usepackage[letterpaper,top=1.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[flushmargin,bottom]{footmisc}
+
+% Set line spacing
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+% Set style of section
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\renewcommand\thesection{Exercise \arabic{section}}
+
+\titlespacing*{\section}{0pt}{1em}{2pt} % Change the spacing before and after the section heading
+
+% Customize the style of article title
+\usepackage{titling}
+\setlength{\droptitle}{-4em} % reduce the space before title
+\settowidth{\thanksmarkwidth}{*}
+\setlength{\thanksmargin}{-\thanksmarkwidth} % remove the indent before thanks
+
+% Set shade color for "solutions"
+\usepackage{xcolor}
+\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+\usepackage{framed}
+
+% Packages about equations and mathematics
+\usepackage{amsmath}
+\usepackage{amssymb} % sign of empty set
+\usepackage{dutchcal} % set swash words
+\usepackage{bbm}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\plim}{plim}
+
+% Parentheses
+\newcommand{\smp}[1]{\left(#1\right)}
+\newcommand{\medp}[1]{\left[#1\right]}
+\newcommand{\bgp}[1]{\left\{#1\right\}}
+
+% Sign of absolute value and norm
+\usepackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs and \norm resizes the size of the brackets, and the starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% Figure
+\usepackage{graphicx}
+\usepackage{asymptote}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns,decorations.pathreplacing,calligraphy,calc,shapes.misc}
+
+% Table
+\usepackage{float} % Fix the placement of tables/figures
+\usepackage{booktabs}
+\usepackage{siunitx} % align numbers by decimal point
+\usepackage{caption}
+\usepackage[labelformat=simple]{subcaption} % set captions for subfigure/subtable
+\renewcommand\thesubfigure{(\alph{subfigure})}
+\renewcommand\thesubtable{(\alph{subtable})}
+
+% Customize the styles of "itemize" and "enumerate"
+\usepackage{enumitem}
+\setenumerate[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=0pt,itemindent=0.5em}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+
+% Code listing
+\usepackage{listings}
+\lstdefinelanguage{Stata}{
+    % System commands
+    morekeywords=[1]{bs, clear, display, drop, egen, gen, jackknife, keep, predict, nlcom, reg, reghdfe, replace, use, webuse, xtreg},
+    % Keywords
+    morekeywords=[2]{forvalues, if, foreach},
+    morecomment=[l]{//},
+    morecomment=[l]{**},
+    morecomment=[s]{/*}{*/},
+    % morecomment=[s]{,}{//},
+    % The following is used by macros, like `lags'.
+    keywordsprefix=[3]\$,
+    morecomment=[n][keywordstyle3]{`}{'},
+    morestring=[b]",
+    sensitive=true,
+}
+
+
+\renewcommand{\ttdefault}{cmtt}
+\lstdefinestyle{mystyle}{
+  basicstyle=\ttfamily
+}
+
+\lstset{style=mystyle,breaklines=true}
+
+\definecolor{structurecolor}{RGB}{60,113,183}
+\definecolor{forestgreen}{RGB}{0,153,76}
+\definecolor{orchid}{RGB}{225,0,152}
+\definecolor{winered}{RGB}{153,0,0}
+\lstset{language=Stata,
+  % Code design
+  commentstyle=\slshape\color{forestgreen},
+  identifierstyle=\color{black},
+  keywordstyle=[1]{\color{blue}},
+  keywordstyle=[2]{\color{blue}},
+  keywordstyle=[3]{\color{winered}},
+  %otherkeywords={},
+  emph={std},
+  emphstyle=\color{orchid},
+  stringstyle=\color{winered},
+  % Line-numbers design
+  numbers=left, % where to put the line-numbers      
+  % numbersep=5pt,
+  numberstyle=\color{gray},
+  % Space design
+  keepspaces=true, % keep indentation of code
+  showspaces=false, % show spaces everywhere adding particular underscores
+  showstringspaces=false, % underline spaces within strings only
+  showtabs=false,
+  % Frame design
+  frame=single,
+  tabsize=2,
+  rulecolor=\color{structurecolor}, % set the frame-color
+  framerule=0.2pt,
+  % Margin design
+  xleftmargin=0.8cm,
+  xrightmargin=0.8cm,
+  % Punctuation design
+  literate={`}{\textasciigrave}1 {~}{{\color{blue}\raisebox{0.5ex}{\texttildelow}}}1,
+  upquote=true,
+  % Other design
+  columns=flexible,
+  % backgroundcolor=\color{white},
+  % caption=Python example,
+  % backgroundcolor=\color{lightgrey},
+  % mathescape=false,
+}
+
+
+% Special words
+\newcommand{\comp}[1]{{\fontfamily{cmtt}\selectfont\color{blue}#1}}
+
+% Other packages
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+
+
+\pagenumbering{gobble}
+\title{Econ-5253\\
+{Problem Set 11}  \\
+\\
+{Draft for Final Project}
+\large  \vspace{-1em}}
+\author{Mieon Seong}
+\date{Due by Apr 23th, 2024}
+
+\begin{document}
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{5pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
+\maketitle
+
+\subsection*{Titlie : How Aurkube Bankruptcy impacts on the Housing Market in USA}
+\\
+\subsection*{1. Introduction}
+{Since the inception of commercial flights, airports and air service have played a pivotal role in the growth of local economies, impacting employment, population, income, and service establishments (see McGraw (2020) for a review.) Prior research, largely case studies focusing on hub airports in metropolitan areas, has also noted a spillover effect on property values (e.g., McMillen 2004). On the other hand, over the past two decades, the U.S. airline industry has witnessed a number of bankruptcy episodes of carriers of varying sizes, raising questions about their economic impact and government bailout interventions. }\\
+\\
+{Our study aims to offer more comprehensive evidence regarding the impact of airline bankruptcies on property values by matching U.S. airline bankruptcy episodes with nationwide property-level transaction data from Zillow's ZTRAX repository. We specifically focus on cities with airports served exclusively by regional airlines as they can be more susceptible to bankruptcy shocks from their serving carriers. }
+\\
+\subsection*{2. Data Description}
+{All legacy carries in the U.S. outsource part of the flight operations to regional carriers that rely on narrow-body jets or turboprops and focus on short-haul operations. A given regional airline can be either wholly owned by a major carrier or independently owned. We manually compile a dataset of airline bankruptcy episodes utilizing information form the UCLA-LoPucki Bankruptcy Research Database (BRD) and the Regional Airline Annual (RAA) Report. Our final dataset comprises airlines that emerged from Chapter 11 filings and operated regular scheduled services for at least five years or 20 quarters during our sample period. Table 1 lists the airline bankruptcies considered in this study.}
+{Property transaction data are sourced from the ZTRAX repository from Zillow, a leading real estate database company. The repository contains detailed information on the price, location, and house characteristics for each sold property across all 50 states since 1999. We utilize the T-100 flight characteristics data from the Bureau of Transportation Statistics (BTS) to capture the characteristics of those airports served exclusively by regional airlines. We then compute the average quarterly value of each route using the quarterly airline pricing data from the Airline Origin and Destination Survey (DB1B) by BTS. }
+{We define the housing market as homes located within a 100-mile radius of the nearest regional airport, with the distance computed using geocodes for each property from the ZTRAX repository. There are 64 real estate markets in our final dataset, drawing representation across 34 states between 2002 and 2017. Correspondingly, there are also 64 airports served exclusively by at least one of the 10 airlines included in the sample. }\\
+\\
+\begin{table}[h]
+\begin{tabular}{ccc}
+\hline
+\multicolumn{1}{|c|}{Airline}               & \multicolumn{1}{c|}{Filing}                                                  & \multicolumn{1}{c|}{Emergence}                                               \\ \hline
+\multicolumn{1}{|c|}{Sun Country Airlines}  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}2002Q1\\ 2008Q4\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}2002Q2\\ 2011Q3\end{tabular}} \\ \hline
+\multicolumn{1}{|c|}{Trans States Airlines} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}2002Q3\\ 2011Q4\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}2006Q1\\ 2013Q4\end{tabular}} \\ \hline
+\multicolumn{1}{|c|}{SkyWest Airlines Inc.} & \multicolumn{1}{c|}{2002Q4}                                                  & \multicolumn{1}{c|}{2006Q1}                                                  \\ \hline
+\multicolumn{1}{|c|}{Piedmont Airlines}     & \multicolumn{1}{c|}{2004Q3}                                                  & \multicolumn{1}{c|}{2005Q3}                                                  \\ \hline
+\multicolumn{1}{|c|}{PSA Airlines Inc.}     & \multicolumn{1}{c|}{2004Q3}                                                  & \multicolumn{1}{c|}{2005Q3}                                                  \\ \hline
+\multicolumn{1}{|c|}{Delta Airlines Inc.}   & \multicolumn{1}{c|}{2005Q3}                                                  & \multicolumn{1}{c|}{2007Q2}                                                  \\ \hline
+\multicolumn{1}{|c|}{Envoy Air}             & \multicolumn{1}{c|}{2011Q4}                                                  & \multicolumn{1}{c|}{2013Q4}                                                  \\ \hline
+\multicolumn{1}{|c|}{Endeavor Air Inc.}     & \multicolumn{1}{c|}{2012Q2}                                                  & \multicolumn{1}{c|}{2013Q2}                                                  \\ \hline
+\multicolumn{1}{|c|}{Republic Airlines}     & \multicolumn{1}{c|}{2016Q1}                                                  & \multicolumn{1}{c|}{2017Q2}                                                  \\ \hline
+\multicolumn{1}{l}{}                        & \multicolumn{1}{l}{}                                                         & \multicolumn{1}{l}{}                                               \\  Table 1 : List of Airline Bankruptcies
+\end{tabular}
+\end{table}
+
+\newpage
+
+\cite{mcurie_radium}
+\cite{ncurie_radium}
+\cite{ocurie_radium}
+
+\bibliographystyle{unsrt}
+\bibliography{PS11_Seong}
+
+
+
+
+\end{document}
